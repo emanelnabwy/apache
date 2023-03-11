@@ -1,0 +1,63 @@
+
+
+###########in start boot >>put tab for edit 
+                 then write >>>1.inst.ks=http://<ip of server>/<name of kickstart>
+                 make sure >>>2.service http work and  apache has permission  to read file 
+                           >>>>3.two mechine can connect through network 
+
+                                         **************************
+
+
+#version=DEVEL
+# System authorization information
+auth --enableshadow --passalgo=sha512
+# Use CDROM installation media
+cdrom
+firewall --disabled
+selinux disabled
+# Use graphical install
+graphical
+# Run the Setup Agent on first boot
+firstboot --enable
+ignoredisk --only-use=sda
+# Keyboard layouts
+keyboard --vckeymap=us --xlayouts='us'
+# System language
+lang en_US.UTF-8
+
+# Network information
+network  --bootproto=dhcp --device=ens33 --ipv6=auto --activate
+network  --hostname=localhost.localdomain
+
+# Root password
+rootpw --iscrypted $1$twaUfFxQ$97zFHaAPZLJS7U1xACpxz/
+
+# System services
+services --enabled="chronyd"
+# System timezone
+timezone Africa/Cairo --isUtc
+user --groups=wheel --name=eman --password=$1$twaUfFxQ$97zFHaAPZLJS7U1xACpxz/  --iscrypted --gecos="Mai Essam"
+# System bootloader configuration
+bootloader --append=" crashkernel=auto" --location=mbr --boot-drive=sda
+autopart --type=lvm
+# Partition clearing information
+clearpart --none --initlabel
+reboot
+%packages
+@^minimal
+@core
+chrony
+kexec-tools
+
+%end
+
+%addon com_redhat_kdump --enable --reserve-mb='auto'
+
+%end
+
+%anaconda
+pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
+pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+%end
+
