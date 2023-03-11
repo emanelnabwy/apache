@@ -1,0 +1,46 @@
+#####this configuration >>>/etc/httpd/conf/httpd.conf
+
+<Directory "/var/html/sa">
+    DirectoryIndex iti.html             ########this page for test directory
+    Require all granted 
+
+</Directory>
+
+
+############# 1.make directory in /var/www/html/sa 
+              ##2.make two file .html(ahmed,mohamed)
+                3. give read permission for other 
+                4. in each file write your data 
+                
+   ##################################
+   configuration 2 file in /etc/httpd/conf.d
+                   ahmed.conf
+ <VirtualHost *:80>
+   ServerName ahmed.com
+   DocumentRoot /var/www/html/sa
+   DirectoryIndex ahmed.html
+</VirtualHost>
+
+
+<Directory "/var/www/html/sa">
+   Require all granted
+   AllowOverride all
+</Directory>
+                 ######################################
+                    mohamed.conf
+<VirtualHost *:80>
+   ServerName mohamed.com
+   DocumentRoot /var/www/html/sa
+   DirectoryIndex mohamed.html
+</VirtualHost>
+
+
+<Directory "/var/www/html/sa">
+   Require all granted
+   AllowOverride all
+</Directory>
+
+                ###################################
+  add ("ahmed.com" ...and...  "mohamed.com"   )
+                in /etc/hosts >>>to can reslove ip 
+                
